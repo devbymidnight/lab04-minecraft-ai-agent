@@ -26,15 +26,16 @@
 
 ## 4. Κατεβάζουμε το Project
 
-Ο εκπαιδευτής θα δώσει το link. Δεν έχει δημοσιευτεί ακόμη δημόσιο repository.
+Άνοιξε το [repository του Lab 04](https://github.com/devbymidnight/lab04-minecraft-ai-agent). Υπάρχει επίσης [ο οδηγός σε PDF](../guides/student-guide.pdf).
 
 Αν χρησιμοποιούμε Git, άνοιξε ένα terminal στον φάκελο που θέλεις. Το terminal είναι το παράθυρο όπου γράφουμε εντολές στον υπολογιστή. Γράψε:
 
 ```text
-git clone <CLASSROOM_REPOSITORY_URL>
+git clone https://github.com/devbymidnight/lab04-minecraft-ai-agent.git
+cd lab04-minecraft-ai-agent
 ```
 
-Αντικατάστησε ολόκληρο το `<CLASSROOM_REPOSITORY_URL>` με το link του εκπαιδευτή, χωρίς τα `< >`. Η εντολή κατεβάζει τον φάκελο του project.
+Η πρώτη εντολή κατεβάζει τον φάκελο του project. Η δεύτερη σε μεταφέρει μέσα σε αυτόν. Γράψε τις εντολές όπως φαίνονται, χωρίς αλλαγές.
 
 Εναλλακτικά, στο GitHub επίλεξε **Code → Download ZIP**. Κάνε δεξί κλικ στο ZIP και **Extract All / Εξαγωγή όλων**. Άνοιξε τον φάκελο που δημιουργήθηκε. Μην τρέχεις το project μέσα από το ZIP.
 

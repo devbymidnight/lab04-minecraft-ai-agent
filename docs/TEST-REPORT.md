@@ -4,7 +4,7 @@
 
 ## Candidate and environment
 
-New isolated repository `techlabs-minecraft-ai-agent`, branch `main`, version 1.0.0. Runtime candidate **4f94754** was cloned and tested; subsequent changes strengthen the test harness and update documentation/evidence without changing that runtime. No prior starter ZIP was found in the inspected workspace, Downloads or Desktop; this was not an exhaustive search of every disk. Existing Minecraft-Auth-Lab server binaries/cache were reused, without its plugins, worlds, player identities, credentials or configuration. No original server was modified. No Git remote was created or pushed.
+New isolated repository `techlabs-minecraft-ai-agent`, branch `main`, version 1.0.0. Runtime candidate **4f94754** was cloned and tested; subsequent changes strengthen the test harness and update documentation/evidence without changing that runtime. No prior starter ZIP was found in the inspected workspace, Downloads or Desktop; this was not an exhaustive search of every disk. Existing Minecraft-Auth-Lab server binaries/cache were reused, without its plugins, worlds, player identities, credentials or configuration. No original server was modified. The prototype was initially local-only; GitHub publication was separately authorized afterward.
 
 | Component | Exact inspected/tested version |
 |---|---|
@@ -117,6 +117,10 @@ The first local clone attempt was blocked by a sandbox Git helper error (`NtCrea
 - Revoke the development API key shared in chat and replace `.env` with a fresh capped key before continued use/distribution. No key is intended for Git or the ZIP.
 - Validate any shared-server Microsoft sign-in, per-student UUID mapping, HTTPS gateway deployment, actual classroom concurrency and account/license arrangements. These are optional architectures, not proven by loopback testing.
 - Ollama is an implemented optional adapter, not a tested local model solution. The final optional gateway passed one real-provider follow smoke test; authentication/quota controls have automated coverage. Remote TLS and classroom load remain untested.
-- No public repository, remote push, paid software installation, firewall change or external service deployment was performed.
+- No paid software installation, firewall change or external service deployment was performed. Repository publication was authorized separately after the gameplay tests.
+
+## Publication and guide update
+
+On 28 October 2026, the user requested upload to [devbymidnight/lab04-minecraft-ai-agent](https://github.com/devbymidnight/lab04-minecraft-ai-agent). The publication package adds an 11-page Greek PDF at `guides/student-guide.pdf`, using the existing Minecraft Tech Labs branding, and updates the README and download instructions to the actual repository URL. The original runtime and lockfile are unchanged. The PDF is rendered and visually checked, with selectable Greek text and clickable links. Publication does not change the classroom-readiness verdict below.
 
 **Overall verdict: BLOCKED for unconditional classroom readiness; working local instructor prototype with real gameplay/LLM evidence.** The visible-client check and a suitable AI access arrangement for ages 10–15 remain critical gates, so this report does not call the lab student-ready yet.

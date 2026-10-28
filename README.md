@@ -1,38 +1,99 @@
-# Tech Labs · Minecraft AI Agent
+# Lab 04 · Minecraft AI Agent
 
-Run a Minecraft bot. Give it a natural-language request. Watch an LLM choose a permitted tool and Mineflayer perform the action.
+**DevByMidnight / Minecraft Tech Labs**
 
-**Classroom readiness is governed by [the test report](docs/TEST-REPORT.md). Do not treat an automated unit-test pass as classroom approval.**
+Δώσε μια οδηγία στο Minecraft. Ένα πραγματικό LLM επιλέγει ένα επιτρεπόμενο εργαλείο και το bot εκτελεί την κίνηση. Δεν χρειάζεται να γράψεις JavaScript.
 
-OpenRouter currently requires users to be **18+**. The personal-key tutorial is for eligible adults/instructors. For the intended ages 10–15, the instructor must establish an appropriate provider-approved classroom arrangement or a suitable local-model option; merely adding a gateway does not waive service terms. [Eligibility](https://openrouter.ai/terms)
+**[Κατέβασε τον οδηγό βήμα προς βήμα (PDF, Ελληνικά)](guides/student-guide.pdf)**
 
-## Students
+[Οδηγός μαθητή](docs/STUDENT-GUIDE-GR.md) · [Teacher guide](docs/TEACHER-GUIDE.md) · [Troubleshooting](docs/TROUBLESHOOTING-GR.md) · [Test report](docs/TEST-REPORT.md)
 
-Your teacher prepares Minecraft Java **1.21.11**, Node.js **24**, a local practice server and private classroom access before class. Minecraft Bedrock and Education Edition do not work with this project.
+![Εικονογράφηση Minecraft Tech Labs: παίκτης και AI βοηθός](docs/assets/ai-quests.png)
 
-1. Clone the classroom repository URL supplied by your teacher, or extract its ZIP. No public repository has been published yet.
-2. Double-click `setup.bat` once. Keep the folder together.
-3. Open `student-config.txt` in Notepad. Set `PLAYER_NAME` to your exact Minecraft name. Choose a different `BOT_NAME`. Follow the [Greek key tutorial](docs/STUDENT-GUIDE-GR.md#5-ρυθμίζουμε-τον-agent) to create your own capped OpenRouter key and save it in `.env`.
-4. Your teacher supplies `classroom-config.txt`. Do not share it.
-5. Double-click **START-BOT.bat**. Wait for `READY: Joined Minecraft`.
-6. Join the teacher's Minecraft world. In the local configuration, use Multiplayer → Direct Connection → `127.0.0.1:25585`.
-7. Open chat with **T** and try:
+*Εικονογράφηση της σειράς μαθημάτων, όχι gameplay screenshot. Το bot αυτού του lab διαθέτει μόνο follow, stop και goto.*
+
+## Πριν αρχίσουμε
+
+Ο εκπαιδευτής προετοιμάζει **Minecraft Java 1.21.11**, **Node.js 24**, έναν τοπικό Minecraft server και το ιδιωτικό `classroom-config.txt`. Το server/world, τα API keys και τα account caches δεν περιλαμβάνονται στο download. Το Bedrock και το Education Edition δεν υποστηρίζονται.
+
+**Για τις ηλικίες 10–15:** οι [τρέχοντες όροι του OpenRouter](https://openrouter.ai/terms) απαιτούν χρήστες 18+. Η ενότητα δημιουργίας προσωπικού API key είναι για εκπαιδευτές και επιλέξιμους ενηλίκους. Πριν από χρήση στην τάξη χρειάζεται κατάλληλη, επιτρεπόμενη πρόσβαση AI. Ένα teacher gateway δεν παρακάμπτει από μόνο του τους όρους.
+
+## 1. Κατέβασε
 
 ```text
-!ai follow me
-!ai stop
-!ai go to 10 64 10
+git clone https://github.com/devbymidnight/lab04-minecraft-ai-agent.git
+cd lab04-minecraft-ai-agent
 ```
 
-Wait at least four seconds between instructions. Coordinates must be on a safe walking route, within 64 blocks of the bot and its starting point. The teacher's practice floor is at Y=64.
+Χωρίς Git: επίλεξε **Code → Download ZIP**, κάνε **Extract All** και άνοιξε τον φάκελο. Μην τρέχεις τα αρχεία μέσα από το ZIP.
 
-**Emergency stop:** `!stop` works without the LLM and cancels a pending request. Close the bot by typing `stop` then Enter in its window (Ctrl+C also works). Follow lasts at most two minutes; one navigation attempt lasts at most 45 seconds.
+Κάνε διπλό κλικ στο **setup.bat** μία φορά. Περίμενε το `Setup complete`. Δημιουργεί τα `student-config.txt` και `.env` από τα ασφαλή παραδείγματα και εγκαθιστά τις κλειδωμένες εξαρτήσεις.
 
-[Ελληνικός οδηγός μαθητή](docs/STUDENT-GUIDE-GR.md) · [Προβλήματα](docs/TROUBLESHOOTING-GR.md) · [Teacher setup](docs/TEACHER-GUIDE.md) · [Architecture](docs/ARCHITECTURE.md)
+## 2. Ρύθμισε
 
-## Instructors
+Άνοιξε το `student-config.txt` στο Notepad. Βάλε το ακριβές Minecraft username σου και ένα διαφορετικό όνομα για το bot:
 
-Read the teacher guide before handing this to students. The default is a teacher-provisioned loopback Minecraft server per workstation and each student's own OpenRouter key in an ignored `.env` file, as requested. Account/payment preparation needs teacher or guardian supervision. An optional teacher-managed gateway avoids distributing provider keys. Shared Minecraft servers require Microsoft authentication and separately provisioned bot accounts.
+```text
+PLAYER_NAME=YourMinecraftName
+BOT_NAME=LabBot01
+```
+
+Πάτησε **Ctrl+S**. Ο εκπαιδευτής τοποθετεί το `classroom-config.txt` στον ίδιο φάκελο.
+
+Στην έκδοση για επιλέξιμους ενηλίκους, το προσωπικό OpenRouter key αποθηκεύεται μόνο στο **`.env`**. Ο [αναλυτικός οδηγός](docs/STUDENT-GUIDE-GR.md) και η σελίδα 5 του PDF δείχνουν τη δημιουργία key, το όριο δαπάνης, την ασφαλή αποθήκευση και την ανάκλησή του. Η προεπιλογή του project χρησιμοποιεί το `openai/gpt-4.1-mini` μέσω OpenRouter.
+
+Αν χρησιμοποιείται teacher gateway, ο εκπαιδευτής δίνει ξεχωριστό περιορισμένο token. Δεν δίνει το provider API key του στους μαθητές.
+
+## 3. Ξεκίνα
+
+1. Ο εκπαιδευτής ξεκινά τον έτοιμο Minecraft server.
+2. Κάνε διπλό κλικ στο **START-BOT.bat**.
+3. Περίμενε το `READY: Joined Minecraft`. Κράτησε το παράθυρο ανοιχτό.
+4. Στο Minecraft Java **1.21.11**, επίλεξε **Multiplayer → Direct Connection**.
+5. Για τον τοπικό server, σύνδεση στο **`127.0.0.1:25585`**. Για κοινό server, χρησιμοποίησε τη διεύθυνση του εκπαιδευτή.
+
+## 4. Δοκίμασε και πειραματίσου
+
+Πάτησε **T**, γράψε μία οδηγία και πάτησε **Enter**:
+
+| Οδηγία | Τι περιμένουμε |
+|---|---|
+| `!ai follow me` | Σε ακολουθεί με pathfinding. |
+| `!ai stop` | Σταματά την κίνηση. |
+| `!ai go to 10 64 10` | Προσπαθεί να φτάσει στις συντεταγμένες. |
+| `!ai come here` | Το LLM ερμηνεύει διαφορετική διατύπωση. |
+| `!ai collect diamonds` | Εξηγεί ότι δεν έχει αυτή τη δυνατότητα. |
+
+Περίμενε τουλάχιστον **4 δευτερόλεπτα** ανάμεσα στις οδηγίες και να ολοκληρωθεί η προηγούμενη κλήση AI. Τα παραδείγματα συντεταγμένων χρησιμοποιούν την πίστα του εκπαιδευτή στο Y=64.
+
+**Άμεσο σταμάτημα:** `!stop` στο Minecraft, χωρίς να περιμένεις το LLM. Για να κλείσεις το bot, γράψε `stop` και Enter στο παράθυρό του, ή πάτησε Ctrl+C.
+
+## Πώς λειτουργεί
+
+```text
+Minecraft chat → Bot → OpenRouter LLM → Έλεγχος tool/ορισμάτων
+             → Mineflayer + Pathfinder → Κίνηση → Feedback
+```
+
+Το LLM επιλέγει μόνο `follow`, `stop`, `goto` ή `unsupported`. Δεν εκτελεί JavaScript, shell commands ή αυθαίρετες εντολές Minecraft. Το πρόγραμμα ελέγχει τον παίκτη, τις συντεταγμένες, την απόσταση και τη διάρκεια. Το feedback επιτυχίας προέρχεται από την πραγματική κίνηση.
+
+- Όριο απόστασης: **64 blocks** από το bot και το αρχικό του σημείο.
+- Follow έως **2 λεπτά**. Μία προσπάθεια goto έως **45 δευτερόλεπτα**.
+- Χωρίς σπάσιμο ή τοποθέτηση blocks.
+- Offline Minecraft μόνο σε **127.0.0.1**. Κοινός server απαιτεί authenticated accounts.
+- Ένα αίτημα AI κάθε φορά, χωρίς αυτόματες επαναλήψεις.
+
+## Ασφάλεια των keys
+
+Το `.env` εξαιρείται από το Git. Το `.env.example` περιέχει μόνο υπόδειγμα. Μην χρησιμοποιήσεις `git add -f`, μην ανεβάσεις τον προσωπικό φάκελο ως ZIP και μην στείλεις keys σε chat ή screenshots. Το `.gitignore` δεν κρυπτογραφεί τα αρχεία. Αν ένα key αποκαλυφθεί, ανάκλησέ το και δημιούργησε νέο.
+
+## Για τον εκπαιδευτή
+
+Διάβασε το [Teacher guide](docs/TEACHER-GUIDE.md) για server setup, μοντέλα, teacher gateway, tokens, όρια χρήσης, πολλούς μαθητές και ασφαλές κλείσιμο. Υπάρχουν δύο επιλογές: teacher-prepared τοπικός server ανά υπολογιστή ή κοινός authenticated server με ξεχωριστές ταυτότητες bot.
+
+**Επαληθευμένο:** 9 automated tests, 21 checks με πραγματικό Minecraft/OpenRouter και 14 checks καθαρής εγκατάστασης/restart. Τα gameplay tests χρησιμοποίησαν πραγματικό Paper server και αυτοματοποιημένους game clients.
+
+**Εκκρεμούν πριν από γενική χρήση στην τάξη:** η οπτική δοκιμή στο κανονικό Minecraft client, η επιτρεπόμενη πρόσβαση AI για ηλικίες 10–15 και έλεγχος της πραγματικής υποδομής της τάξης. Το [Test report](docs/TEST-REPORT.md) καταγράφει επίσης τη γνωστή transitive dependency advisory. Η δημοσίευση του project δεν σημαίνει ότι έκλεισαν αυτές οι εκκρεμότητες.
 
 ```text
 npm test
@@ -40,6 +101,20 @@ npm run preflight
 npm start
 ```
 
-Dependencies are pinned in `package-lock.json`. `setup.bat` uses `npm ci --ignore-scripts`. Do not run `npm audit fix --force`; see the documented dependency advisory first. No firewall changes or public service exposure are part of setup.
+Οι εξαρτήσεις είναι κλειδωμένες στο `package-lock.json`. Το setup χρησιμοποιεί `npm ci --ignore-scripts`. Μην εκτελέσεις `npm audit fix --force` χωρίς έλεγχο συμβατότητας. Δεν απαιτείται αλλαγή firewall ή έκθεση υπηρεσίας στο Internet.
 
-The repository contains original lab code only. Minecraft/Paper binaries, worlds, local credentials, account caches, and personal settings are excluded. Do not upload the entire working folder as a ZIP; use `git archive` after inspecting the tracked files.
+## Αρχεία του lab
+
+| Αρχείο / φάκελος | Ρόλος |
+|---|---|
+| `START-BOT.bat` | Η καθημερινή εκκίνηση του bot. |
+| `setup.bat` | Αρχική εγκατάσταση και δημιουργία υποδειγμάτων. |
+| `student-config.example` | Τα δύο ονόματα που ρυθμίζει ο μαθητής. |
+| `classroom-config.example` | Ρυθμίσεις υποδομής για τον εκπαιδευτή. |
+| `.env.example` | Κενό υπόδειγμα ιδιωτικού API key. |
+| `guides/student-guide.pdf` | Ο επώνυμος οδηγός βήμα προς βήμα στα Ελληνικά. |
+| `docs/` | Student/teacher guides, αρχιτεκτονική και test report. |
+| `src/`, `tests/` | Υλοποίηση και αυτοματοποιημένοι έλεγχοι. |
+| `teacher/` | Προετοιμασία τοπικού server και προαιρετικού AI gateway. |
+
+Ανεξάρτητο εκπαιδευτικό project της σειράς **DevByMidnight / Minecraft Tech Labs**. Δεν συνδέεται επίσημα με τη Mojang ή τη Microsoft.
