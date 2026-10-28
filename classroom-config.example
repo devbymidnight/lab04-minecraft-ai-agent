@@ -1,0 +1,15 @@
+# TEACHER ONLY: copy to classroom-config.txt; never commit the filled file.
+MC_HOST=127.0.0.1
+MC_PORT=25585
+MC_VERSION=1.21.11
+# offline is allowed ONLY on literal 127.0.0.1. Shared servers need microsoft.
+MC_AUTH=offline
+# For microsoft mode: teacher-provisioned bot account identifier and player UUID.
+BOT_ACCOUNT=
+PLAYER_UUID=
+# Each student saves their own OpenRouter key in .env. Never put it here.
+AI_MODE=openrouter
+AI_URL=https://openrouter.ai/api/v1/chat/completions
+AI_TOKEN=
+# Optional teacher gateway mode is explained in docs/TEACHER-GUIDE.md.
+AI_MODEL=openai/gpt-4.1-mini

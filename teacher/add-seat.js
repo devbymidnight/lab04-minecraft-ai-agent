@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import { randomBytes } from 'node:crypto';
+import { hashToken } from './gateway.js';
+import { safeUrl } from '../src/config.js';
+const [seat,url] = process.argv.slice(2);
+if (!/^[a-z0-9_-]{1,24}$/.test(seat || '')) throw new Error('Use a seat ID such as seat01, without student names.');
+safeUrl(url);
+const folder = `.local/seats/${seat}`;
+if (fs.existsSync(folder)) throw new Error('This seat already exists. Use its existing configuration or revoke it deliberately.');
+const config = JSON.parse(fs.readFileSync('.local/teacher.json','utf8'));
+const token = randomBytes(32).toString('base64url');
+config.tokenHashes.push(hashToken(token));
+fs.mkdirSync(folder,{recursive:true});
+fs.writeFileSync(`${folder}/classroom-config.txt`,fs.readFileSync('classroom-config.example','utf8').replace('AI_MODE=openrouter','AI_MODE=gateway').replace(/^AI_TOKEN=.*$/m,`AI_TOKEN=${token}`).replace('https://openrouter.ai/api/v1/chat/completions',url),{flag:'wx',mode:0o600});
+fs.writeFileSync('.local/teacher.json',JSON.stringify(config,null,2),{mode:0o600});
+console.log(`Prepared ${folder}/classroom-config.txt. Transfer it privately to this workstation. Restart the gateway to load the new seat.`);
