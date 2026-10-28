@@ -1,6 +1,6 @@
 # Engineering validation — 28 October 2026
 
-**Readiness: NOT YET APPROVED FOR CLASSROOM USE.** The real-server, real-LLM and fresh-clone Windows-launcher tests pass. The visible Minecraft client check remains unverified because the user stopped Computer Use with Escape. OpenRouter's 18+ eligibility requirement also prevents recommending personal accounts for the intended 10–15 audience. Do not infer a graphical/student usability pass from protocol clients.
+**Readiness: NOT YET APPROVED FOR CLASSROOM USE.** The real-server, real-LLM and fresh-clone Windows-launcher tests pass. The graphical Minecraft gameplay smoke test now also passes based on the user's manual confirmations and supplied screenshot, as detailed below. This closes the visible-client gameplay gap, but does not establish beginner setup usability or classroom readiness. OpenRouter's 18+ eligibility requirement still prevents recommending personal accounts for the intended 10–15 audience.
 
 ## Candidate and environment
 
@@ -74,7 +74,7 @@ The deterministic-AI run is explicitly labelled **REAL MINECRAFT / SIMULATED AI*
 | Emergency stop | Cancels movement; unit case also rejects delayed pending result | PASS |
 | Disconnect | Actual server shutdown, agent ready state false | PASS |
 | Restart | New client connections and repeated essential actions | PASS, real server/client |
-| Graphical Minecraft join/chat/visible motion | Computer Use stopped by user with Escape | UNVERIFIED |
+| Graphical Minecraft join/chat/visible motion | Subsequent user-operated Minecraft 1.21.11 smoke test; see manual evidence below | PASS, user-confirmed |
 
 Local machine-readable evidence: `.local/live-movement.json`, `.local/live-openrouter.json`, archived previous reports and server logs. They are intentionally excluded from Git because operational logs may contain identities/chat. The summary above contains synthetic test identities only.
 
@@ -84,7 +84,23 @@ Local machine-readable evidence: `.local/live-movement.json`, `.local/live-openr
 2. The first real gateway run failed on its first provider request; a second reached follow/stop/coordinates/unsupported/come-here before a later provider failure. A direct diagnostic confirmed the requested coordinate/variation outputs. The initial Google-model direct gameplay run later received **HTTP 429**. These incomplete runs are not passes. The final default was changed to `openai/gpt-4.1-mini`; its complete direct gameplay run passed. No automatic retry loop was added.
 3. Feedback could be dropped if arrival occurred very soon after a movement-start message. Changed to a bounded delayed latest message so final feedback can reach chat without spam.
 4. Default Mineflayer chat patterns derive usernames from rendered text. The agent instead consumes protocol player-chat sender UUIDs; a real `tellraw` spoof was ignored.
-5. The native client launcher was opened for inspection, but the user stopped Computer Use. No subsequent app input was attempted and no graphical result is claimed.
+5. The native client launcher was opened for inspection, but the user stopped Computer Use. No subsequent app input was attempted in that turn. The graphical gameplay gap was later closed by the user-operated smoke test below; this is not an automated GUI pass.
+
+## Graphical Minecraft manual smoke test
+
+On **28 October 2026 (Asia/Nicosia)**, the user tested the published candidate **a68623df9590a3d9baa354e6cb078180b034d597** in the graphical Minecraft Java **1.21.11** client against the local Paper server at `127.0.0.1:25585`. The runtime is unchanged from the earlier automated candidate. The existing direct OpenRouter configuration was used; no simulated AI mode was introduced for this session.
+
+Preparation exposed a client-version mismatch: Minecraft 1.21 displayed **"Outdated client! Please use 1.21.11"**. The user relaunched 1.21.11, whose window version was confirmed. The actual `START-BOT.bat --no-pause` launcher passed preflight and logged `READY: Joined Minecraft`. Sandbox restrictions initially blocked Java/local socket checks; execution with permitted networking succeeded. Computer Use was then stopped with Escape, and the user performed the gameplay checks manually.
+
+| Manual check | Evidence | Result |
+|---|---|---|
+| Follow using `!ai follow me` | User confirmed that follow works | PASS, user-reported visible gameplay |
+| Stop | User confirmed that stop works | PASS, user-reported; exact stop command and latency were not separately recorded |
+| Unsupported action using `!ai build a house` | User-supplied screenshot shows the command and the bot's explicit follow/stop/coordinates-only refusal | PASS, screenshot evidence |
+| Nearby coordinate movement using `!ai go to X Y Z` | User confirmed the instructed nearby movement/arrival test works | PASS, user-reported; exact coordinates and trajectory were not captured |
+| Distance limit using `!ai go to 100000 100 100000` | User confirmed the instructed distance-refusal test works | PASS, user-reported |
+
+**Manual gameplay verdict: PASS for these five smoke checks.** The user first reported "follow and stop works" with the refusal screenshot, then confirmed "both tests work" for the remaining coordinate and distance checks. These confirmations are separate from the automated test counts above. The screenshot and operational logs are not published because they contain player identity/chat. No claim is made that Codex independently operated or measured these five GUI checks. Beginner installation, personal-key entry, account/license arrangements and classroom concurrency remain untested.
 
 ## Dependency advisory
 
@@ -106,13 +122,13 @@ $env:STUDENT_COPY='.local/student-guide-test'
 node scripts/student-flow-test.js
 ```
 
-`--no-pause` skips only the final batch-file pause for automation. It does not bypass checks. The `.env` used for testing was copied privately after clone, never obtained from Git. Test credential copies are removed after verification. Student-flow evidence is `.local/student-flow.json`, with earlier results retained privately. Opening a real graphical Minecraft window and entering chat by hand remain separate unverified steps.
+`--no-pause` skips only the final batch-file pause for automation. It does not bypass checks. The `.env` used for testing was copied privately after clone, never obtained from Git. Test credential copies are removed after verification. Student-flow evidence is `.local/student-flow.json`, with earlier results retained privately. Graphical gameplay was subsequently checked separately by the user, as recorded in the manual smoke-test section.
 
 The first local clone attempt was blocked by a sandbox Git helper error (`NtCreateDirectoryObject`, access denied). Repeating the same local clone with approved execution permissions succeeded. This was not a remote repository/authentication failure.
 
 ## Remaining gates
 
-- Observe the graphical Minecraft workflow with a legitimate student account, including key entry and startup; try the lesson with a beginner. Computer Use can resume only when the user allows it in a later turn, or the instructor can perform the checkpoint.
+- Try the complete setup workflow with a beginner, including configuration, permitted AI access/key entry and startup. The local graphical gameplay smoke test now passes, but it does not validate student account/license arrangements or independent beginner setup.
 - Resolve age eligibility: [OpenRouter terms](https://openrouter.ai/terms), checked 28 October 2026, require users to be at least 18. The key tutorial is restricted to eligible adults/instructors. Confirm an appropriate provider/model-approved classroom arrangement or test a suitable local model before use with ages 10–15. A gateway is not an automatic exception.
 - Revoke the development API key shared in chat and replace `.env` with a fresh capped key before continued use/distribution. No key is intended for Git or the ZIP.
 - Validate any shared-server Microsoft sign-in, per-student UUID mapping, HTTPS gateway deployment, actual classroom concurrency and account/license arrangements. These are optional architectures, not proven by loopback testing.
@@ -123,4 +139,4 @@ The first local clone attempt was blocked by a sandbox Git helper error (`NtCrea
 
 On 28 October 2026, the user requested upload to [devbymidnight/lab04-minecraft-ai-agent](https://github.com/devbymidnight/lab04-minecraft-ai-agent). The publication package adds an 11-page Greek PDF at `guides/student-guide.pdf`, using the existing Minecraft Tech Labs branding, and updates the README and download instructions to the actual repository URL. The original runtime and lockfile are unchanged. The PDF is rendered and visually checked, with selectable Greek text and clickable links. Publication does not change the classroom-readiness verdict below.
 
-**Overall verdict: BLOCKED for unconditional classroom readiness; working local instructor prototype with real gameplay/LLM evidence.** The visible-client check and a suitable AI access arrangement for ages 10–15 remain critical gates, so this report does not call the lab student-ready yet.
+**Overall verdict: BLOCKED for unconditional classroom readiness; working local instructor prototype with automated real gameplay/LLM evidence and a passed user-operated graphical smoke test.** A suitable AI access arrangement for ages 10–15 and beginner setup validation remain open, so this report does not call the lab student-ready yet.
