@@ -2,7 +2,7 @@
 
 ## Before class
 
-This is a Java Edition lab for ages 10–15. Students change names and a private credential; they do not edit source code. The requested default now uses each student's own OpenRouter API key. This adds supervised account/credit preparation. A teacher gateway remains available when individual provider accounts are inappropriate.
+This is a Java Edition lab for ages 10–15. Students do not edit source code. The requested technical default uses a personal OpenRouter API key in `.env`, and that flow was tested with the instructor's key. **OpenRouter's current terms require users to be 18 or older.** The personal-key tutorial is therefore for eligible adults/instructors, not an instruction for minors to register. Guardian supervision alone is not stated as an exception. Establish a provider-approved educational arrangement, or evaluate a suitable local model, before use with this age group. A teacher gateway is technically available but does not automatically satisfy service/model eligibility terms. [OpenRouter eligibility](https://openrouter.ai/terms)
 
 Do not distribute the lab as classroom-ready until the critical checks in [TEST-REPORT.md](TEST-REPORT.md) are complete. In particular, automated protocol players are distinct from observing a student use the graphical Minecraft client.
 
@@ -52,9 +52,9 @@ Wait a few seconds after `forceload` before `fill`. Confirm a successful fill; i
 
 For this PC, the isolated server is already prepared. Use `.local/runtime.json` to locate it. That ignored file records the actual Java executable, avoiding a hanging Java launcher found on PATH. Do not distribute this machine-specific file unchanged to other PCs.
 
-## Individual OpenRouter keys — default requested workflow
+## Individual OpenRouter keys — eligible adults/instructor workflow
 
-Students follow the Greek guide with instructor/guardian supervision:
+Eligible adult learners/instructors follow the Greek tutorial. Do not enroll 10–15-year-olds in personal OpenRouter accounts:
 
 1. Use [OpenRouter API Keys](https://openrouter.ai/settings/keys) to create a key dedicated to this lab.
 2. Set a small non-resetting credit cap, for example $1. Confirm it before using the key. Arrange credits through the responsible adult/school account.
@@ -70,7 +70,7 @@ The `.env` file is plaintext, excluded from normal Git tracking. Use separate OS
 
 ## Optional teacher-managed AI gateway
 
-Use this when students should have no provider key/account/payment setup. Run the gateway on a teacher-controlled machine. The `.env` on that machine contains the teacher's capped OpenRouter key. Only the gateway reads it.
+Use this when learners should have no provider key/account/payment setup, after confirming that the intended classroom/end-user arrangement is permitted by the provider and model terms. A gateway is a credential boundary, not an age-eligibility workaround. Run it on a teacher-controlled machine. Its `.env` contains the teacher's capped OpenRouter key. Only the gateway reads it.
 
 In a fresh teacher copy with no existing `classroom-config.txt` or `.local/teacher.json`, run:
 
@@ -125,6 +125,7 @@ Start with 2–4 seats, then test your actual class size. Each local server is c
 ## Pre-class checklist
 
 - [ ] Test report's critical gaps closed on the target classroom setup.
+- [ ] Provider/model eligibility for the 10–15 age group confirmed; no personal OpenRouter accounts created by minors.
 - [ ] Minecraft 1.21.11 opens; multiplayer is permitted for the student accounts.
 - [ ] Local server starts, floor exists at Y=64, and port 25585 is free.
 - [ ] Fresh `setup.bat` succeeds or the teacher already installed dependencies.

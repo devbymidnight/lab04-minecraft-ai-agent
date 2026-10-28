@@ -35,12 +35,12 @@ try{
     cmd('tp LabBot01 0 64 0');cmd('tp LabTester 12 64 0');await delay(1200);
     const pos=()=>player.players.LabBot01?.entity?.position;
     assert.equal(pos().y,64);let last=0;
-    async function instruction(text,tool){await delay(Math.max(0,4500-(Date.now()-last)));const start=botOutput.length;player.chat(`!ai ${text}`);last=Date.now();await until(()=>botOutput.slice(start).includes(`TOOL: ${tool}`),text);}
+    async function instruction(text,tool){await delay(Math.max(0,4500-(Date.now()-last)));const start=botOutput.length;player.chat(`!ai ${text}`);last=Date.now();await until(()=>botOutput.slice(start).includes(`TOOL: ${tool}`),text);return start;}
     const before=pos().clone();await instruction(round===1?'follow me':'follow me please','follow');await until(()=>distance(pos(),player.entity.position)<3.5,'follow');assert.ok(pos().x-before.x>5);pass(`follow round ${round}`,{before,after:pos().clone()});
     cmd('tp LabTester 22 64 0');await delay(1000);
     await instruction(round===1?'stop':'can you stop moving?','stop');await delay(600);const stopped=pos().clone();await delay(1000);assert.ok(distance(pos(),stopped)<0.15);pass(`stop round ${round}`,{drift:distance(pos(),stopped)});
     const target=round===1?{x:10,y:64,z:10}:{x:15,y:64,z:20};
-    await instruction(round===1?'go to 10 64 10':'walk to x 15 y 64 z 20','goto');await until(()=>distance(pos(),target)<1.8,'coordinates');pass(`coordinates round ${round}`,{target,actual:pos().clone()});
+    const navigationStart=await instruction(round===1?'go to 10 64 10':'walk to x 15 y 64 z 20','goto');await until(()=>distance(pos(),target)<1.8 && botOutput.slice(navigationStart).includes('Arrived at the destination.'),'coordinates and arrival feedback');pass(`coordinates round ${round}`,{target,actual:pos().clone(),arrivalFeedback:true});
     await instruction('collect diamonds','unsupported');await until(()=>botOutput.includes('I can only follow'),'unsupported feedback');pass(`unsupported round ${round}`,{});
     launcher.stdin.write('stop\n');await until(()=>launcher.exitCode!==null,'typed stop graceful exit');assert.equal(launcher.exitCode,0);pass(`typed stop round ${round}`,{exitCode:launcher.exitCode});
     player.quit();await delay(800);cmd('stop');await until(()=>server.exitCode!==null,'server shutdown',30000);assert.equal(server.exitCode,0);pass(`server shutdown round ${round}`,{exitCode:server.exitCode});
@@ -50,5 +50,5 @@ try{
 finally{
   try{launcher?.stdin.write('stop\n');}catch{}try{player?.quit();}catch{}
   if(server?.exitCode===null){try{cmd('stop');}catch{}await Promise.race([once(server,'exit'),delay(20000)]);if(server.exitCode===null)server.kill();}
-  serverLog.end();report.finished=new Date().toISOString();fs.writeFileSync('.local/student-flow.json',JSON.stringify(report,null,2));console.log('Evidence saved to .local/student-flow.json');
+  serverLog.end();report.finished=new Date().toISOString();if(fs.existsSync('.local/student-flow.json'))fs.copyFileSync('.local/student-flow.json',`.local/student-flow-${Date.now()}-previous.json`);fs.writeFileSync('.local/student-flow.json',JSON.stringify(report,null,2));console.log('Evidence saved to .local/student-flow.json');
 }

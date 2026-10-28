@@ -4,6 +4,8 @@ Run a Minecraft bot. Give it a natural-language request. Watch an LLM choose a p
 
 **Classroom readiness is governed by [the test report](docs/TEST-REPORT.md). Do not treat an automated unit-test pass as classroom approval.**
 
+OpenRouter currently requires users to be **18+**. The personal-key tutorial is for eligible adults/instructors. For the intended ages 10–15, the instructor must establish an appropriate provider-approved classroom arrangement or a suitable local-model option; merely adding a gateway does not waive service terms. [Eligibility](https://openrouter.ai/terms)
+
 ## Students
 
 Your teacher prepares Minecraft Java **1.21.11**, Node.js **24**, a local practice server and private classroom access before class. Minecraft Bedrock and Education Edition do not work with this project.

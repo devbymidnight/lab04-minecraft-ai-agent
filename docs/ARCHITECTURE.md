@@ -25,6 +25,8 @@ The source has five small runtime modules: configuration, LLM HTTP adapter, tool
 
 The original request preferred no student provider accounts. The user subsequently selected OpenRouter and explicitly requested a tutorial for each student's own API key. The shipped default follows that update; the gateway supports the original low-setup option.
 
+The [current OpenRouter terms](https://openrouter.ai/terms) require age 18+. Personal key creation is documented for eligible adults/instructors. The intended 10–15 classroom deployment remains gated on a suitable approved arrangement or local model; a gateway alone does not remove terms or model eligibility requirements.
+
 ## Runtime boundaries
 
 - Exact player identity; remote servers require Microsoft mode and expected UUID. Protocol player-chat sender identity is used, with no system-message regex fallback.

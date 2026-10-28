@@ -1,10 +1,10 @@
 # Engineering validation — 28 October 2026
 
-**Readiness: NOT YET APPROVED FOR CLASSROOM USE.** The real-server and real-LLM prototype works in automated gameplay. The visible Minecraft client check remains unverified because the user stopped Computer Use with Escape. Fresh-clone launcher verification is recorded below when completed. Do not infer a graphical/student usability pass from protocol clients.
+**Readiness: NOT YET APPROVED FOR CLASSROOM USE.** The real-server, real-LLM and fresh-clone Windows-launcher tests pass. The visible Minecraft client check remains unverified because the user stopped Computer Use with Escape. OpenRouter's 18+ eligibility requirement also prevents recommending personal accounts for the intended 10–15 audience. Do not infer a graphical/student usability pass from protocol clients.
 
 ## Candidate and environment
 
-New isolated repository `techlabs-minecraft-ai-agent`, branch `main`, version 1.0.0. No prior starter ZIP was found in the inspected workspace, Downloads or Desktop; this was not an exhaustive search of every disk. Existing Minecraft-Auth-Lab server binaries/cache were reused, without its plugins, worlds, player identities, credentials or configuration. No original server was modified. No Git remote was created or pushed.
+New isolated repository `techlabs-minecraft-ai-agent`, branch `main`, version 1.0.0. Runtime candidate **4f94754** was cloned and tested; subsequent changes strengthen the test harness and update documentation/evidence without changing that runtime. No prior starter ZIP was found in the inspected workspace, Downloads or Desktop; this was not an exhaustive search of every disk. Existing Minecraft-Auth-Lab server binaries/cache were reused, without its plugins, worlds, player identities, credentials or configuration. No original server was modified. No Git remote was created or pushed.
 
 | Component | Exact inspected/tested version |
 |---|---|
@@ -52,7 +52,7 @@ These use simulated AI responses where appropriate; they do not establish model 
 
 The harness starts the actual Paper Java server. Real Mineflayer clients join as synthetic `LabTester`, `LabBot01` and `LabIntruder`. Chat is sent over Minecraft's protocol. Position observations come from entities in the running game, not mocked movement functions. No graphical player was used for these automated runs.
 
-The deterministic-AI run is explicitly labelled **REAL MINECRAFT / SIMULATED AI**. It validated the executor independently, across two bot launches. The successful final real-AI run used **REAL MINECRAFT / REAL OPENROUTER / DIRECT**, matching the default student AI connection.
+The deterministic-AI run is explicitly labelled **REAL MINECRAFT / SIMULATED AI**: **21 passed observations**, across two bot launches. The successful final real-AI run used **REAL MINECRAFT / REAL OPENROUTER / DIRECT**: **21 passed observations**, matching the default direct AI connection. It ran on 28 October 2026, approximately 15:11–15:13 in Asia/Nicosia. A separate optional-gateway smoke test with the final model returned the valid follow decision through authenticated local HTTP. This is not a remote TLS deployment or class-load test.
 
 | Acceptance case | Evidence | Result |
 |---|---|---|
@@ -92,14 +92,31 @@ Local machine-readable evidence: `.local/live-movement.json`, `.local/live-openr
 
 ## Fresh student copy
 
-Pending at this report revision: local Git clone → change names/config → clean setup.bat → actual START-BOT.bat → real chat/motion → typed stop → full server/bot restart → repeat. The final result must be recorded before claiming this gate passed.
+**PASS: 14 observed checks across two complete server/bot launches**, with the actual `START-BOT.bat` from a local clone of runtime candidate 4f94754 and fresh `npm ci` dependencies. A stricter repeat required both final position and the actual `Arrived at the destination` feedback. Each round passed preflight/startup, follow, stop (zero drift), coordinates/arrival, unsupported request, typed `stop` with exit code 0, and server shutdown with exit code 0.
+
+The first clean clone followed configure → setup → run. A second clean clone also tested the Greek guide's setup → configure → run order: setup generated both `.env` and `student-config.txt` exactly from their examples before private settings were supplied. It is recorded separately in the private evidence. No developer node_modules were copied.
+
+```text
+git clone --no-hardlinks . .local/fresh-student
+cmd.exe /d /c setup.bat --no-pause
+node scripts/student-flow-test.js
+git clone --no-hardlinks . .local/student-guide-test
+cmd.exe /d /c setup.bat --no-pause
+$env:STUDENT_COPY='.local/student-guide-test'
+node scripts/student-flow-test.js
+```
+
+`--no-pause` skips only the final batch-file pause for automation. It does not bypass checks. The `.env` used for testing was copied privately after clone, never obtained from Git. Test credential copies are removed after verification. Student-flow evidence is `.local/student-flow.json`, with earlier results retained privately. Opening a real graphical Minecraft window and entering chat by hand remain separate unverified steps.
+
+The first local clone attempt was blocked by a sandbox Git helper error (`NtCreateDirectoryObject`, access denied). Repeating the same local clone with approved execution permissions succeeded. This was not a remote repository/authentication failure.
 
 ## Remaining gates
 
 - Observe the graphical Minecraft workflow with a legitimate student account, including key entry and startup; try the lesson with a beginner. Computer Use can resume only when the user allows it in a later turn, or the instructor can perform the checkpoint.
+- Resolve age eligibility: [OpenRouter terms](https://openrouter.ai/terms), checked 28 October 2026, require users to be at least 18. The key tutorial is restricted to eligible adults/instructors. Confirm an appropriate provider/model-approved classroom arrangement or test a suitable local model before use with ages 10–15. A gateway is not an automatic exception.
 - Revoke the development API key shared in chat and replace `.env` with a fresh capped key before continued use/distribution. No key is intended for Git or the ZIP.
 - Validate any shared-server Microsoft sign-in, per-student UUID mapping, HTTPS gateway deployment, actual classroom concurrency and account/license arrangements. These are optional architectures, not proven by loopback testing.
-- Ollama is an implemented optional adapter, not a tested local model solution. The final optional gateway with the new model still needs its own live-provider run; its authentication/quota controls have automated coverage.
+- Ollama is an implemented optional adapter, not a tested local model solution. The final optional gateway passed one real-provider follow smoke test; authentication/quota controls have automated coverage. Remote TLS and classroom load remain untested.
 - No public repository, remote push, paid software installation, firewall change or external service deployment was performed.
 
-**Overall verdict: BLOCKED for unconditional classroom readiness; working local instructor prototype with real gameplay/LLM evidence.** The visible-client check is critical, so this report does not call the lab student-ready yet.
+**Overall verdict: BLOCKED for unconditional classroom readiness; working local instructor prototype with real gameplay/LLM evidence.** The visible-client check and a suitable AI access arrangement for ages 10–15 remain critical gates, so this report does not call the lab student-ready yet.
