@@ -6,7 +6,7 @@
 
 **[Κατέβασε τον οδηγό βήμα προς βήμα (PDF, Ελληνικά)](guides/student-guide.pdf)**
 
-[Οδηγός μαθητή](docs/STUDENT-GUIDE-GR.md) · [Teacher guide](docs/TEACHER-GUIDE.md) · [Troubleshooting](docs/TROUBLESHOOTING-GR.md) · [Test report](docs/TEST-REPORT.md)
+[Οδηγός μαθητή](docs/STUDENT-GUIDE-GR.md) · [Troubleshooting](docs/TROUBLESHOOTING-GR.md) · [Test report](docs/TEST-REPORT.md)
 
 ![Εικονογράφηση Minecraft Tech Labs: παίκτης και AI βοηθός](docs/assets/ai-quests.png)
 
@@ -87,13 +87,23 @@ Minecraft chat → Bot → OpenRouter LLM → Έλεγχος tool/ορισμάτ
 
 Το `.env` εξαιρείται από το Git. Το `.env.example` περιέχει μόνο υπόδειγμα. Μην χρησιμοποιήσεις `git add -f`, μην ανεβάσεις τον προσωπικό φάκελο ως ZIP και μην στείλεις keys σε chat ή screenshots. Το `.gitignore` δεν κρυπτογραφεί τα αρχεία. Αν ένα key αποκαλυφθεί, ανάκλησέ το και δημιούργησε νέο.
 
-## Για τον εκπαιδευτή
+## Επιτυχείς δοκιμές
 
-Διάβασε το [Teacher guide](docs/TEACHER-GUIDE.md) για server setup, μοντέλα, teacher gateway, tokens, όρια χρήσης, πολλούς μαθητές και ασφαλές κλείσιμο. Υπάρχουν δύο επιλογές: teacher-prepared τοπικός server ανά υπολογιστή ή κοινός authenticated server με ξεχωριστές ταυτότητες bot.
+**Επαληθευμένο:** 9 automated tests, 21 checks με πραγματικό Minecraft/OpenRouter και 14 checks καθαρής εγκατάστασης/restart. Αυτά τα gameplay tests χρησιμοποίησαν πραγματικό Paper server και αυτοματοποιημένους game clients.
 
-**Επαληθευμένο:** 9 automated tests, 21 checks με πραγματικό Minecraft/OpenRouter και 14 checks καθαρής εγκατάστασης/restart. Τα gameplay tests χρησιμοποίησαν πραγματικό Paper server και αυτοματοποιημένους game clients.
+**Χειροκίνητη δοκιμή στο Minecraft Java 1.21.11: PASS στις 28 Οκτωβρίου 2026.** Ο χρήστης επιβεβαίωσε τα παρακάτω στον τοπικό server με την υπάρχουσα σύνδεση OpenRouter:
 
-**Εκκρεμούν πριν από γενική χρήση στην τάξη:** η οπτική δοκιμή στο κανονικό Minecraft client, η επιτρεπόμενη πρόσβαση AI για ηλικίες 10–15 και έλεγχος της πραγματικής υποδομής της τάξης. Το [Test report](docs/TEST-REPORT.md) καταγράφει επίσης τη γνωστή transitive dependency advisory. Η δημοσίευση του project δεν σημαίνει ότι έκλεισαν αυτές οι εκκρεμότητες.
+| Έλεγχος | Αποτέλεσμα / τεκμήριο |
+|---|---|
+| Follow | PASS: ο χρήστης επιβεβαίωσε ότι το bot ακολουθεί. |
+| Stop | PASS: ο χρήστης επιβεβαίωσε ότι σταματά. Η ακριβής εντολή stop και ο χρόνος απόκρισης δεν καταγράφηκαν ξεχωριστά. |
+| Κίνηση σε κοντινές συντεταγμένες / άφιξη | PASS: επιβεβαίωση χρήστη για τη δοκιμή. |
+| Μη υποστηριζόμενο αίτημα `!ai build a house` | PASS: screenshot δείχνει τη σωστή άρνηση και τις διαθέσιμες δυνατότητες. |
+| Μακρινός προορισμός `!ai go to 100000 100 100000` | PASS: ο χρήστης επιβεβαίωσε την απόρριψη λόγω ορίου απόστασης. |
+
+Οι **5 χειροκίνητοι έλεγχοι** είναι ξεχωριστοί από τα παραπάνω αυτοματοποιημένα tests. Δεν αποτελούν αυτοματοποιημένη δοκιμή GUI ή μέτρηση διαδρομής/χρόνου. Η έκδοση 1.21 απορρίφθηκε ως παλιά: χρησιμοποίησε ακριβώς **1.21.11**. Αναλυτική καταγραφή: [Test report](docs/TEST-REPORT.md#graphical-minecraft-manual-smoke-test).
+
+**Εκκρεμούν πριν από γενική χρήση στην τάξη:** η πλήρης εγκατάσταση/ρύθμιση από αρχάριο, η επιτρεπόμενη πρόσβαση AI για ηλικίες 10–15 και ο έλεγχος της πραγματικής υποδομής και των λογαριασμών της τάξης. Το [Test report](docs/TEST-REPORT.md) καταγράφει επίσης τη γνωστή transitive dependency advisory. Οι επιτυχείς δοκιμές gameplay δεν κλείνουν αυτές τις εκκρεμότητες.
 
 ```text
 npm test
@@ -113,7 +123,7 @@ npm start
 | `classroom-config.example` | Ρυθμίσεις υποδομής για τον εκπαιδευτή. |
 | `.env.example` | Κενό υπόδειγμα ιδιωτικού API key. |
 | `guides/student-guide.pdf` | Ο επώνυμος οδηγός βήμα προς βήμα στα Ελληνικά. |
-| `docs/` | Student/teacher guides, αρχιτεκτονική και test report. |
+| `docs/` | Οδηγός μαθητή, troubleshooting, αρχιτεκτονική και test report. |
 | `src/`, `tests/` | Υλοποίηση και αυτοματοποιημένοι έλεγχοι. |
 | `teacher/` | Προετοιμασία τοπικού server και προαιρετικού AI gateway. |
 

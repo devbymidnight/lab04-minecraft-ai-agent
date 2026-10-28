@@ -11,5 +11,5 @@ PLAYER_UUID=
 AI_MODE=openrouter
 AI_URL=https://openrouter.ai/api/v1/chat/completions
 AI_TOKEN=
-# Optional teacher gateway mode is explained in docs/TEACHER-GUIDE.md.
+# Optional gateway mode requires a separately prepared access token.
 AI_MODEL=openai/gpt-4.1-mini

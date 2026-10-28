@@ -2,7 +2,7 @@
 
 [Download the Greek step-by-step guide](student-guide.pdf).
 
-The 11-page PDF follows the DevByMidnight / Minecraft Tech Labs navy-and-mint branding. It includes setup, configuration, an adult/instructor API-key tutorial, Minecraft commands, experiments, troubleshooting and a teacher checklist. Illustrations are labelled as artwork, not gameplay screenshots.
+The 11-page student PDF follows the DevByMidnight / Minecraft Tech Labs navy-and-mint branding. It includes setup, configuration, an API-key tutorial for eligible adults, Minecraft commands, experiments, troubleshooting and the five successful user-operated gameplay checks from 28 October 2026. Illustrations are labelled as artwork, not gameplay screenshots. Teacher guidance is maintained separately and is not included in this download.
 
 For maintainers only, rebuild from the repository root with Python and ReportLab installed:
 
