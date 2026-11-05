@@ -1,130 +1,93 @@
-# Lab 04 · Minecraft AI Agent
+## Εγκατάσταση και εκκίνηση από το VS Code
 
-**DevByMidnight / Minecraft Tech Labs**
+### 1. Κάνε clone και άνοιξε το project
 
-Δώσε μια οδηγία στο Minecraft. Ένα πραγματικό LLM επιλέγει ένα επιτρεπόμενο εργαλείο και το bot εκτελεί την κίνηση. Δεν χρειάζεται να γράψεις JavaScript.
-
-**[Κατέβασε τον οδηγό βήμα προς βήμα (PDF, Ελληνικά)](guides/student-guide.pdf)**
-
-[Οδηγός μαθητή](docs/STUDENT-GUIDE-GR.md) · [Troubleshooting](docs/TROUBLESHOOTING-GR.md) · [Test report](docs/TEST-REPORT.md)
-
-![Εικονογράφηση Minecraft Tech Labs: παίκτης και AI βοηθός](docs/assets/ai-quests.png)
-
-*Εικονογράφηση της σειράς μαθημάτων, όχι gameplay screenshot. Το bot αυτού του lab διαθέτει μόνο follow, stop και goto.*
-
-## Πριν αρχίσουμε
-
-Ο εκπαιδευτής προετοιμάζει **Minecraft Java 1.21.11**, **Node.js 24**, έναν τοπικό Minecraft server και το ιδιωτικό `classroom-config.txt`. Το server/world, τα API keys και τα account caches δεν περιλαμβάνονται στο download. Το Bedrock και το Education Edition δεν υποστηρίζονται.
-
-**Για τις ηλικίες 10–15:** οι [τρέχοντες όροι του OpenRouter](https://openrouter.ai/terms) απαιτούν χρήστες 18+. Η ενότητα δημιουργίας προσωπικού API key είναι για εκπαιδευτές και επιλέξιμους ενηλίκους. Πριν από χρήση στην τάξη χρειάζεται κατάλληλη, επιτρεπόμενη πρόσβαση AI. Ένα teacher gateway δεν παρακάμπτει από μόνο του τους όρους.
-
-## 1. Κατέβασε
+Στο VS Code, άνοιξε την παλέτα εντολών με **Ctrl+Shift+P**, επίλεξε **Git: Clone** και επικόλλησε:
 
 ```text
-git clone https://github.com/devbymidnight/lab04-minecraft-ai-agent.git
-cd lab04-minecraft-ai-agent
+https://github.com/devbymidnight/lab04-minecraft-ai-agent.git
 ```
 
-Χωρίς Git: επίλεξε **Code → Download ZIP**, κάνε **Extract All** και άνοιξε τον φάκελο. Μην τρέχεις τα αρχεία μέσα από το ZIP.
+Επίλεξε πού θα αποθηκευτεί το project και πάτησε **Open**. Αν έχεις ήδη κάνει clone, άνοιξε τον φάκελο `lab04-minecraft-ai-agent` με **File → Open Folder**.
 
-Κάνε διπλό κλικ στο **setup.bat** μία φορά. Περίμενε το `Setup complete`. Δημιουργεί τα `student-config.txt` και `.env` από τα ασφαλή παραδείγματα και εγκαθιστά τις κλειδωμένες εξαρτήσεις.
+### 2. Εγκατάστησε τις εξαρτήσεις μία φορά
 
-## 2. Ρύθμισε
+Στο VS Code επίλεξε **Terminal → New Terminal** και βεβαιώσου ότι το terminal γράφει **PowerShell**. Τρέξε τις εντολές από τον φάκελο που περιέχει το `package.json`:
 
-Άνοιξε το `student-config.txt` στο Notepad. Βάλε το ακριβές Minecraft username σου και ένα διαφορετικό όνομα για το bot:
+```powershell
+node --version
+npm.cmd ci --ignore-scripts --no-fund
+```
+
+Η πρώτη εντολή πρέπει να εμφανίσει `v24.x.x`. Η δεύτερη εγκαθιστά τις εκδόσεις που ορίζει το `package-lock.json`. Χρησιμοποιούμε `npm.cmd` ώστε οι εντολές να εκτελούνται στο PowerShell των Windows χωρίς αλλαγή του execution policy.
+
+### 3. Ρύθμισε τα τρία αρχεία μέσα στο VS Code
+
+Άνοιξε το **Explorer** στην αριστερή πλευρά του VS Code. Τα αρχεία ρυθμίσεων μπαίνουν στον ίδιο φάκελο με το `package.json`. Σε νέο clone, δημιούργησε τα δύο προσωπικά σου αρχεία από τα υποδείγματα:
+
+Τρέξε κάθε εντολή μόνο αν λείπει το αντίστοιχο αρχείο, για να διατηρήσεις τις υπάρχουσες ρυθμίσεις σου.
+
+| Αρχείο | Τι χρειάζεται να κάνεις |
+|---|---|
+| `student-config.txt` | Άνοιξέ το στο VS Code. Βάλε στο `PLAYER_NAME` το ακριβές όνομα που χρησιμοποιείς μέσα στο Minecraft και στο `BOT_NAME` ένα διαφορετικό όνομα για το bot. Πάτησε **Ctrl+S**. |
+| `classroom-config.txt` | Βάλε στον φάκελο το έτοιμο αρχείο που σου δίνει ο εκπαιδευτής. Περιέχει τη διεύθυνση και τη θύρα του Paper, την έκδοση Minecraft και τις ρυθμίσεις AI. |
+| `.env` | Αν η τάξη χρησιμοποιεί `gateway` ή `ollama`, άφησέ το όπως είναι. Αν είσαι επιλέξιμος ενήλικος και χρησιμοποιείς απευθείας `openrouter`, βάλε το προσωπικό σου key στη γραμμή `OPENROUTER_API_KEY=` και πάτησε **Ctrl+S**. Κράτησε το αρχείο ιδιωτικό. |
+
+**Παράδειγμα `student-config.txt`** για παίκτη που ονομάζεται `AlexCraft`:
 
 ```text
-PLAYER_NAME=YourMinecraftName
+PLAYER_NAME=AlexCraft
 BOT_NAME=LabBot01
 ```
 
-Πάτησε **Ctrl+S**. Ο εκπαιδευτής τοποθετεί το `classroom-config.txt` στον ίδιο φάκελο.
+**Για τον εκπαιδευτή:** σε νέο clone, δημιούργησε το `classroom-config.txt` με την παρακάτω εντολή και άνοιξέ το από το Explorer του VS Code:
 
-Στην έκδοση για επιλέξιμους ενηλίκους, το προσωπικό OpenRouter key αποθηκεύεται μόνο στο **`.env`**. Ο [αναλυτικός οδηγός](docs/STUDENT-GUIDE-GR.md) και η σελίδα 5 του PDF δείχνουν τη δημιουργία key, το όριο δαπάνης, την ασφαλή αποθήκευση και την ανάκλησή του. Η προεπιλογή του project χρησιμοποιεί το `openai/gpt-4.1-mini` μέσω OpenRouter.
-
-Αν χρησιμοποιείται teacher gateway, ο εκπαιδευτής δίνει ξεχωριστό περιορισμένο token. Δεν δίνει το provider API key του στους μαθητές.
-
-## 3. Ξεκίνα
-
-1. Ο εκπαιδευτής ξεκινά τον έτοιμο Minecraft server.
-2. Κάνε διπλό κλικ στο **START-BOT.bat**.
-3. Περίμενε το `READY: Joined Minecraft`. Κράτησε το παράθυρο ανοιχτό.
-4. Στο Minecraft Java **1.21.11**, επίλεξε **Multiplayer → Direct Connection**.
-5. Για τον τοπικό server, σύνδεση στο **`127.0.0.1:25585`**. Για κοινό server, χρησιμοποίησε τη διεύθυνση του εκπαιδευτή.
-
-## 4. Δοκίμασε και πειραματίσου
-
-Πάτησε **T**, γράψε μία οδηγία και πάτησε **Enter**:
-
-| Οδηγία | Τι περιμένουμε |
-|---|---|
-| `!ai follow me` | Σε ακολουθεί με pathfinding. |
-| `!ai stop` | Σταματά την κίνηση. |
-| `!ai go to 10 64 10` | Προσπαθεί να φτάσει στις συντεταγμένες. |
-| `!ai come here` | Το LLM ερμηνεύει διαφορετική διατύπωση. |
-| `!ai collect diamonds` | Εξηγεί ότι δεν έχει αυτή τη δυνατότητα. |
-
-Περίμενε τουλάχιστον **4 δευτερόλεπτα** ανάμεσα στις οδηγίες και να ολοκληρωθεί η προηγούμενη κλήση AI. Τα παραδείγματα συντεταγμένων χρησιμοποιούν την πίστα του εκπαιδευτή στο Y=64.
-
-**Άμεσο σταμάτημα:** `!stop` στο Minecraft, χωρίς να περιμένεις το LLM. Για να κλείσεις το bot, γράψε `stop` και Enter στο παράθυρό του, ή πάτησε Ctrl+C.
-
-## Πώς λειτουργεί
-
-```text
-Minecraft chat → Bot → OpenRouter LLM → Έλεγχος tool/ορισμάτων
-             → Mineflayer + Pathfinder → Κίνηση → Feedback
+```powershell
+Copy-Item .\classroom-config.example .\classroom-config.txt
 ```
 
-Το LLM επιλέγει μόνο `follow`, `stop`, `goto` ή `unsupported`. Δεν εκτελεί JavaScript, shell commands ή αυθαίρετες εντολές Minecraft. Το πρόγραμμα ελέγχει τον παίκτη, τις συντεταγμένες, την απόσταση και τη διάρκεια. Το feedback επιτυχίας προέρχεται από την πραγματική κίνηση.
-
-- Όριο απόστασης: **64 blocks** από το bot και το αρχικό του σημείο.
-- Follow έως **2 λεπτά**. Μία προσπάθεια goto έως **45 δευτερόλεπτα**.
-- Χωρίς σπάσιμο ή τοποθέτηση blocks.
-- Offline Minecraft μόνο σε **127.0.0.1**. Κοινός server απαιτεί authenticated accounts.
-- Ένα αίτημα AI κάθε φορά, χωρίς αυτόματες επαναλήψεις.
-
-## Ασφάλεια των keys
-
-Το `.env` εξαιρείται από το Git. Το `.env.example` περιέχει μόνο υπόδειγμα. Μην χρησιμοποιήσεις `git add -f`, μην ανεβάσεις τον προσωπικό φάκελο ως ZIP και μην στείλεις keys σε chat ή screenshots. Το `.gitignore` δεν κρυπτογραφεί τα αρχεία. Αν ένα key αποκαλυφθεί, ανάκλησέ το και δημιούργησε νέο.
-
-## Επιτυχείς δοκιμές
-
-**Επαληθευμένο:** 9 automated tests, 21 checks με πραγματικό Minecraft/OpenRouter και 14 checks καθαρής εγκατάστασης/restart. Αυτά τα gameplay tests χρησιμοποίησαν πραγματικό Paper server και αυτοματοποιημένους game clients.
-
-**Χειροκίνητη δοκιμή στο Minecraft Java 1.21.11: PASS στις 28 Οκτωβρίου 2026.** Ο χρήστης επιβεβαίωσε τα παρακάτω στον τοπικό server με την υπάρχουσα σύνδεση OpenRouter:
-
-| Έλεγχος | Αποτέλεσμα / τεκμήριο |
-|---|---|
-| Follow | PASS: ο χρήστης επιβεβαίωσε ότι το bot ακολουθεί. |
-| Stop | PASS: ο χρήστης επιβεβαίωσε ότι σταματά. Η ακριβής εντολή stop και ο χρόνος απόκρισης δεν καταγράφηκαν ξεχωριστά. |
-| Κίνηση σε κοντινές συντεταγμένες / άφιξη | PASS: επιβεβαίωση χρήστη για τη δοκιμή. |
-| Μη υποστηριζόμενο αίτημα `!ai build a house` | PASS: screenshot δείχνει τη σωστή άρνηση και τις διαθέσιμες δυνατότητες. |
-| Μακρινός προορισμός `!ai go to 100000 100 100000` | PASS: ο χρήστης επιβεβαίωσε την απόρριψη λόγω ορίου απόστασης. |
-
-Οι **5 χειροκίνητοι έλεγχοι** είναι ξεχωριστοί από τα παραπάνω αυτοματοποιημένα tests. Δεν αποτελούν αυτοματοποιημένη δοκιμή GUI ή μέτρηση διαδρομής/χρόνου. Η έκδοση 1.21 απορρίφθηκε ως παλιά: χρησιμοποίησε ακριβώς **1.21.11**. Αναλυτική καταγραφή: [Test report](docs/TEST-REPORT.md#graphical-minecraft-manual-smoke-test).
-
-**Εκκρεμούν πριν από γενική χρήση στην τάξη:** η πλήρης εγκατάσταση/ρύθμιση από αρχάριο, η επιτρεπόμενη πρόσβαση AI για ηλικίες 10–15 και ο έλεγχος της πραγματικής υποδομής και των λογαριασμών της τάξης. Το [Test report](docs/TEST-REPORT.md) καταγράφει επίσης τη γνωστή transitive dependency advisory. Οι επιτυχείς δοκιμές gameplay δεν κλείνουν αυτές τις εκκρεμότητες.
+Για Paper **στον ίδιο υπολογιστή**, έλεγξε αυτές τις γραμμές και κράτησε τις υπόλοιπες ρυθμίσεις AI του αρχείου:
 
 ```text
-npm test
-npm run preflight
-npm start
+MC_HOST=127.0.0.1
+MC_PORT=25565
+MC_VERSION=1.21.11
+MC_AUTH=offline
 ```
 
-Οι εξαρτήσεις είναι κλειδωμένες στο `package-lock.json`. Το setup χρησιμοποιεί `npm ci --ignore-scripts`. Μην εκτελέσεις `npm audit fix --force` χωρίς έλεγχο συμβατότητας. Δεν απαιτείται αλλαγή firewall ή έκθεση υπηρεσίας στο Internet.
+Η `MC_PORT` πρέπει να ταιριάζει με το `server-port` του Paper. Αν χρησιμοποιείς τον server που ετοίμασε το `teacher/prepare-server.ps1`, η θύρα του είναι **`25585`**.
 
-## Αρχεία του lab
+### 4. Ξεκίνα τον Paper και μετά το bot
 
-| Αρχείο / φάκελος | Ρόλος |
+Περίμενε να εμφανιστεί `Done (...)!` στην κονσόλα του Paper. Στο **PowerShell του VS Code**, τρέξε:
+
+```powershell
+npm.cmd run preflight
+```
+
+Μόλις εμφανιστεί `Preflight passed. Minecraft server is reachable.`, ξεκίνα το bot:
+
+```powershell
+npm.cmd start
+```
+
+Περίμενε το `READY: Joined Minecraft` και κράτησε το terminal ανοιχτό. Μπες από **Minecraft Java 1.21.11 → Multiplayer → Direct Connection** στην ίδια διεύθυνση και θύρα που γράφει το `classroom-config.txt`. Στο chat του παιχνιδιού δοκίμασε `!ai follow me`.
+
+**Αν το preflight περάσει αλλά δεις `Failed to verify username!`:** το bot έφτασε στον Paper, αλλά ο server ζητά επαληθευμένο λογαριασμό ενώ το bot χρησιμοποιεί `MC_AUTH=offline`. Για το lab **στον ίδιο υπολογιστή**, ο εκπαιδευτής γράφει `stop` στην κονσόλα του Paper, ανοίγει το `server.properties` του συγκεκριμένου server στο VS Code και ελέγχει:
+
+```properties
+server-port=25565
+online-mode=false
+enforce-secure-profile=false
+```
+
+Αν η τάξη χρησιμοποιεί `25585`, βάλε `25585` και στα δύο αρχεία. Αποθήκευσε το `server.properties`, ξεκίνα ξανά τον Paper και μετά τρέξε `npm.cmd start`. Για κοινό server όπου οι μαθητές συνδέονται από διαφορετικούς υπολογιστές, ο εκπαιδευτής κρατά `online-mode=true` και ρυθμίζει το bot με `MC_AUTH=microsoft` και λογαριασμό Minecraft.
+
+### Εντολές npm στο PowerShell
+
+| Πότε | Εντολή |
 |---|---|
-| `START-BOT.bat` | Η καθημερινή εκκίνηση του bot. |
-| `setup.bat` | Αρχική εγκατάσταση και δημιουργία υποδειγμάτων. |
-| `student-config.example` | Τα δύο ονόματα που ρυθμίζει ο μαθητής. |
-| `classroom-config.example` | Ρυθμίσεις υποδομής για τον εκπαιδευτή. |
-| `.env.example` | Κενό υπόδειγμα ιδιωτικού API key. |
-| `guides/student-guide.pdf` | Ο επώνυμος οδηγός βήμα προς βήμα στα Ελληνικά. |
-| `docs/` | Οδηγός μαθητή, troubleshooting, αρχιτεκτονική και test report. |
-| `src/`, `tests/` | Υλοποίηση και αυτοματοποιημένοι έλεγχοι. |
-| `teacher/` | Προετοιμασία τοπικού server και προαιρετικού AI gateway. |
-
-Ανεξάρτητο εκπαιδευτικό project της σειράς **DevByMidnight / Minecraft Tech Labs**. Δεν συνδέεται επίσημα με τη Mojang ή τη Microsoft.
+| Στην αρχική εγκατάσταση | `npm.cmd ci --ignore-scripts --no-fund` |
+| Για έλεγχο ρυθμίσεων και σύνδεσης με τον Paper | `npm.cmd run preflight` |
+| Για εκκίνηση του bot σε κάθε μάθημα | `npm.cmd start` |
+| Για εκτέλεση των αυτοματοποιημένων unit tests | `npm.cmd test` |

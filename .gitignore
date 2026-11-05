@@ -2,8 +2,6 @@ node_modules/
 .local/
 .env
 .env.*
-student-config.txt
-classroom-config.txt
 teacher-config.txt
 *.log
 *.zip

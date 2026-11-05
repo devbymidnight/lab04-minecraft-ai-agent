@@ -19,7 +19,7 @@ foreach ($item in @('paper.jar','cache','libraries','versions','eula.txt')) {
 }
 @'
 server-ip=127.0.0.1
-server-port=25585
+server-port=25565
 online-mode=false
 enforce-secure-profile=false
 enable-rcon=false
